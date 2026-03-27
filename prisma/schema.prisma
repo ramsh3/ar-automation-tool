@@ -1,0 +1,125 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id           String    @id @default(uuid())
+  customerNo   String    @unique  // e.g. CUST-10234
+  name         String
+  email        String
+  phone        String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  invoices     Invoice[]
+  payments     Payment[]
+  tickets      Ticket[]
+}
+
+model Invoice {
+  id           String    @id @default(uuid())
+  invoiceNo    String    @unique  // e.g. INV-10042
+  customerId   String
+  invoiceDate  DateTime
+  dueDate      DateTime
+  totalAmount  Decimal   @db.Decimal(12, 2)
+  balanceDue   Decimal   @db.Decimal(12, 2)
+  status       InvoiceStatus @default(OPEN)
+  terms        String?   // e.g. "Net 30"
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  customer     Customer  @relation(fields: [customerId], references: [id])
+  lineItems    LineItem[]
+  payments     Payment[]
+}
+
+model LineItem {
+  id          String   @id @default(uuid())
+  invoiceId   String
+  description String
+  quantity    Decimal  @db.Decimal(10, 2)
+  unitRate    Decimal  @db.Decimal(12, 2)
+  total       Decimal  @db.Decimal(12, 2)
+
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id])
+}
+
+model Payment {
+  id          String        @id @default(uuid())
+  paymentNo   String        @unique  // e.g. PAY-3041
+  customerId  String
+  invoiceId   String
+  amount      Decimal       @db.Decimal(12, 2)
+  method      PaymentMethod
+  status      PaymentStatus @default(CLEARED)
+  paidAt      DateTime
+  createdAt   DateTime      @default(now())
+
+  customer    Customer @relation(fields: [customerId], references: [id])
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id])
+}
+
+model Ticket {
+  id           String       @id @default(uuid())
+  caseNo       String       @unique  // e.g. AR-2026-00047
+  customerId   String
+  invoiceNo    String?
+  type         TicketType
+  subject      String
+  description  String       @db.Text
+  priority     Priority     @default(NORMAL)
+  status       TicketStatus @default(OPEN)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  customer     Customer @relation(fields: [customerId], references: [id])
+}
+
+// ── Enums ──────────────────────────────────
+
+enum InvoiceStatus {
+  OPEN
+  PAID
+  OVERDUE
+  PARTIAL
+}
+
+enum PaymentMethod {
+  ACH
+  CREDIT_CARD
+  CHECK
+  WIRE
+}
+
+enum PaymentStatus {
+  PENDING
+  CLEARED
+  FAILED
+}
+
+enum TicketType {
+  INVOICE_DISPUTE
+  PAYMENT_ISSUE
+  GENERAL_INQUIRY
+  OTHER
+}
+
+enum Priority {
+  NORMAL
+  URGENT
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
