@@ -25,12 +25,10 @@ export default function LoginPage() {
 
   function handleVerify() {
     setStep('success');
-  }
-
-  function handleSuccess(){
-    setStep('success');
     setTimeout(() => router.push('/dashboard'), 1000);
   }
+
+  
 
   function handleOtpChange(index: number, value: string) {
     const cleaned = value.replace(/\D/, '').slice(-1);
@@ -245,13 +243,13 @@ export default function LoginPage() {
               ))}
             </div>
         
-            <button onClick={() => setStep('success')} className="btn-grad">
+            <button onClick={handleVerify} className="btn-grad">
               Verify &amp; Sign In ✓
             </button>
         
             <div
               style={{ textAlign: 'center', marginTop: 10, fontSize: 11, color: 'var(--text-3)', cursor: 'pointer' }}
-              onClick={handleSuccess}
+              onClick={() => setStep('customer-number')}
             >
               ← Different customer number
             </div>
