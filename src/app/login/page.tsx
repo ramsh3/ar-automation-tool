@@ -27,10 +27,10 @@ export default function LoginPage() {
     setStep('success');
   }
 
-
-
-
-
+  function handleSuccess(){
+    setStep('success');
+    setTimeout(() => router.push('/dashboard'), 1000);
+  }
 
   function handleOtpChange(index: number, value: string) {
     const cleaned = value.replace(/\D/, '').slice(-1);
@@ -251,7 +251,7 @@ export default function LoginPage() {
         
             <div
               style={{ textAlign: 'center', marginTop: 10, fontSize: 11, color: 'var(--text-3)', cursor: 'pointer' }}
-              onClick={() => setStep('customer-number')}
+              onClick={handleSuccess}
             >
               ← Different customer number
             </div>
