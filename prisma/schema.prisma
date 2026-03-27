@@ -6,7 +6,6 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
 }
 
 model Customer {
@@ -121,5 +120,7 @@ enum TicketStatus {
   OPEN
   IN_PROGRESS
   RESOLVED
+
+  
   CLOSED
 }
