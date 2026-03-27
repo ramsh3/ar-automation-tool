@@ -73,14 +73,14 @@ export default function DashboardPage() {
       <div
         className="flex items-center px-6 flex-shrink-0"
         style={{
-          height: 74,
+          height: 54,
           background: 'rgba(0,0,0,0.92)',
           backdropFilter: 'blur(20px)',
           borderBottom: '1px solid rgba(255,255,255,0.07)',
         }}
       >
         <div className="mr-7">
-          <AgilysysLogo size="lg" />
+          <AgilysysLogo size="sm" />
         </div>
 
         {/* Nav tabs */}
@@ -96,7 +96,7 @@ export default function DashboardPage() {
                 background: tab === key ? 'rgba(255,255,255,0.12)' : 'transparent',
                 color: tab === key ? 'white' : 'rgba(255,255,255,0.5)',
                 fontFamily: 'Inter, sans-serif',
-                fontSize: 15,
+                fontSize: 13,
                 fontWeight: 500,
                 cursor: 'pointer',
                 borderRadius: 8,
@@ -116,7 +116,7 @@ export default function DashboardPage() {
             borderRadius: 100,
             padding: '4px 12px',
             color: '#5CB85C',
-            fontSize: 13,
+            fontSize: 11,
           }}
         >
           CUST-10234
@@ -130,10 +130,10 @@ export default function DashboardPage() {
         {tab === 'overview' && (
           <div>
             <div className="mb-5">
-              <div className="font-black text-white" style={{ fontSize: 24, letterSpacing: '-0.5px' }}>
+              <div className="font-black text-white" style={{ fontSize: 20, letterSpacing: '-0.5px' }}>
                 Overview
               </div>
-              <div style={{ fontSize: 15, color: 'var(--text-3)', marginTop: 3 }}>
+              <div style={{ fontSize: 13, color: 'var(--text-3)', marginTop: 3 }}>
                 ABC Manufacturing Corp · CUST-10234
               </div>
             </div>
@@ -160,16 +160,16 @@ export default function DashboardPage() {
                     className="absolute top-0 left-0 right-0"
                     style={{ height: 2, background: accent }}
                   />
-                  <div style={{ fontSize: 13, color: 'var(--text-3)', fontWeight: 600, marginBottom: 6 }}>
+                  <div style={{ fontSize: 11, color: 'var(--text-3)', fontWeight: 600, marginBottom: 6 }}>
                     {lbl}
                   </div>
                   <div
                     className="mono font-black"
-                    style={{ fontSize: 30, letterSpacing: '-1px', color: accent }}
+                    style={{ fontSize: 26, letterSpacing: '-1px', color: accent }}
                   >
                     {val}
                   </div>
-                  <div style={{ fontSize: 13, color: 'var(--text-3)', marginTop: 5 }}>{sub}</div>
+                  <div style={{ fontSize: 11, color: 'var(--text-3)', marginTop: 5 }}>{sub}</div>
                 </div>
               ))}
             </div>
@@ -186,7 +186,7 @@ export default function DashboardPage() {
                   padding: '20px 22px',
                 }}
               >
-                <div className="font-bold mb-5" style={{ fontSize: 15, color: 'white' }}>
+                <div className="font-bold mb-5" style={{ fontSize: 13, color: 'white' }}>
                   📊 Aging Summary
                 </div>
                 {[
@@ -196,13 +196,13 @@ export default function DashboardPage() {
                   { lbl: '61–90 Days', pct: 20, color: 'linear-gradient(90deg,#FF453A,#FF6961)', val: '$8,200',  txtColor: '#FF453A' },
                 ].map(({ lbl, pct, color, val, txtColor }) => (
                   <div key={lbl} className="flex items-center gap-3 mb-3">
-                    <div style={{ width: 72, fontSize: 13, color: 'var(--text-3)', fontWeight: 500, flexShrink: 0 }}>
+                    <div style={{ width: 72, fontSize: 11, color: 'var(--text-3)', fontWeight: 500, flexShrink: 0 }}>
                       {lbl}
                     </div>
                     <div className="flex-1 rounded-full overflow-hidden" style={{ height: 6, background: 'rgba(255,255,255,0.08)' }}>
                       <div style={{ width: `${pct}%`, height: '100%', background: color, borderRadius: 999 }} />
                     </div>
-                    <div className="mono font-bold text-right" style={{ fontSize: 14, color: txtColor, minWidth: 60 }}>
+                    <div className="mono font-bold text-right" style={{ fontSize: 12, color: txtColor, minWidth: 60 }}>
                       {val}
                     </div>
                   </div>
@@ -219,10 +219,10 @@ export default function DashboardPage() {
                 }}
               >
                 <div className="flex items-center justify-between mb-4">
-                  <div className="font-bold" style={{ fontSize: 15, color: 'white' }}>📄 Recent Invoices</div>
+                  <div className="font-bold" style={{ fontSize: 13, color: 'white' }}>📄 Recent Invoices</div>
                   <span
                     className="cursor-pointer font-bold"
-                    style={{ fontSize: 13, color: '#5CB85C' }}
+                    style={{ fontSize: 11, color: '#5CB85C' }}
                     onClick={() => setTab('invoices')}
                   >
                     View all →
@@ -244,13 +244,13 @@ export default function DashboardPage() {
                       onClick={() => inv.status !== 'paid' && setInvModalOpen(true)}
                     >
                       <div>
-                        <div className="mono font-semibold" style={{ fontSize: 15, color: 'white' }}>{inv.id}</div>
-                        <div style={{ fontSize: 13, color: inv.overdueNote ? '#FF6961' : 'var(--text-3)' }}>
+                        <div className="mono font-semibold" style={{ fontSize: 13, color: 'white' }}>{inv.id}</div>
+                        <div style={{ fontSize: 11, color: inv.overdueNote ? '#FF6961' : 'var(--text-3)' }}>
                           {inv.overdueNote ? `Due ${inv.dueDate} · ${inv.overdueNote}` : `Paid ${inv.dueDate}`}
                         </div>
                       </div>
                       <span className={`bdg ${inv.status}`}>{inv.status.charAt(0).toUpperCase() + inv.status.slice(1)}</span>
-                      <div className="mono font-bold" style={{ fontSize: 15, color: inv.balanceColor || 'white' }}>
+                      <div className="mono font-bold" style={{ fontSize: 13, color: inv.balanceColor || 'white' }}>
                         {inv.amount}
                       </div>
                       {inv.status !== 'paid' && (
@@ -264,7 +264,7 @@ export default function DashboardPage() {
                             padding: '5px 10px',
                             background: 'var(--grad)',
                             borderRadius: 100,
-                            fontSize: 13,
+                            fontSize: 11,
                             color: 'white',
                             textDecoration: 'none',
                             whiteSpace: 'nowrap',
@@ -285,8 +285,8 @@ export default function DashboardPage() {
         {tab === 'invoices' && (
           <div>
             <div className="mb-5">
-              <div className="font-black text-white" style={{ fontSize: 24, letterSpacing: '-0.5px' }}>Invoices</div>
-              <div style={{ fontSize: 15, color: 'var(--text-3)', marginTop: 3 }}>All invoices synced live from NetSuite</div>
+              <div className="font-black text-white" style={{ fontSize: 20, letterSpacing: '-0.5px' }}>Invoices</div>
+              <div style={{ fontSize: 13, color: 'var(--text-3)', marginTop: 3 }}>All invoices synced live from NetSuite</div>
             </div>
 
             <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 14, overflow: 'hidden' }}>
@@ -298,7 +298,7 @@ export default function DashboardPage() {
                         key={h}
                         style={{
                           padding: '10px 16px',
-                          fontSize: 12,
+                          fontSize: 10,
                           fontWeight: 700,
                           textTransform: 'uppercase',
                           letterSpacing: '0.6px',
@@ -322,18 +322,18 @@ export default function DashboardPage() {
                       onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                     >
                       <td style={{ padding: '12px 16px' }}>
-                        <span className="mono font-semibold" style={{ fontSize: 15, color: 'white' }}>{inv.id}</span>
+                        <span className="mono font-semibold" style={{ fontSize: 13, color: 'white' }}>{inv.id}</span>
                       </td>
-                      <td style={{ padding: '12px 16px', fontSize: 15, color: 'var(--text-2)' }}>{inv.date}</td>
-                      <td style={{ padding: '12px 16px', fontSize: 15, color: inv.dueDateColor || 'var(--text-2)', fontWeight: inv.dueDateColor ? 600 : 400 }}>
+                      <td style={{ padding: '12px 16px', fontSize: 13, color: 'var(--text-2)' }}>{inv.date}</td>
+                      <td style={{ padding: '12px 16px', fontSize: 13, color: inv.dueDateColor || 'var(--text-2)', fontWeight: inv.dueDateColor ? 600 : 400 }}>
                         {inv.dueDate}
-                        {inv.overdueNote && <span style={{ display: 'block', fontSize: 12, color: '#FF6961' }}>{inv.overdueNote}</span>}
+                        {inv.overdueNote && <span style={{ display: 'block', fontSize: 10, color: '#FF6961' }}>{inv.overdueNote}</span>}
                       </td>
                       <td style={{ padding: '12px 16px' }}>
-                        <span className="mono" style={{ fontSize: 15, color: 'var(--text-2)' }}>{inv.amount}</span>
+                        <span className="mono" style={{ fontSize: 13, color: 'var(--text-2)' }}>{inv.amount}</span>
                       </td>
                       <td style={{ padding: '12px 16px' }}>
-                        <span className="mono font-semibold" style={{ fontSize: 15, color: inv.balanceColor || 'var(--text-2)' }}>{inv.balance}</span>
+                        <span className="mono font-semibold" style={{ fontSize: 13, color: inv.balanceColor || 'var(--text-2)' }}>{inv.balance}</span>
                       </td>
                       <td style={{ padding: '12px 16px' }}>
                         <span className={`bdg ${inv.status}`}>{inv.status.charAt(0).toUpperCase() + inv.status.slice(1)}</span>
@@ -343,13 +343,13 @@ export default function DashboardPage() {
                           <button
                             onClick={() => handleDownload(inv.id)}
                             className="font-semibold"
-                            style={{ padding: '5px 10px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, fontSize: 13, color: 'var(--text-2)', cursor: 'pointer' }}
+                            style={{ padding: '5px 10px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, fontSize: 11, color: 'var(--text-2)', cursor: 'pointer' }}
                           >
                             ⬇ PDF
                           </button>
                           <button
                             onClick={() => setTab('new-ticket')}
-                            style={{ padding: '5px 10px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, fontSize: 13, color: 'var(--text-2)', cursor: 'pointer' }}
+                            style={{ padding: '5px 10px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, fontSize: 11, color: 'var(--text-2)', cursor: 'pointer' }}
                           >
                             🎫
                           </button>
@@ -362,7 +362,7 @@ export default function DashboardPage() {
                             target="_blank"
                             rel="noreferrer"
                             className="flex items-center gap-1 font-bold"
-                            style={{ padding: '5px 12px', background: 'var(--grad)', borderRadius: 100, fontSize: 13, color: 'white', textDecoration: 'none', display: 'inline-flex', whiteSpace: 'nowrap' }}
+                            style={{ padding: '5px 12px', background: 'var(--grad)', borderRadius: 100, fontSize: 11, color: 'white', textDecoration: 'none', display: 'inline-flex', whiteSpace: 'nowrap' }}
                           >
                             💳 Pay Now
                           </a>
@@ -380,8 +380,8 @@ export default function DashboardPage() {
         {tab === 'payments' && (
           <div>
             <div className="mb-5">
-              <div className="font-black text-white" style={{ fontSize: 24, letterSpacing: '-0.5px' }}>Payments</div>
-              <div style={{ fontSize: 15, color: 'var(--text-3)', marginTop: 3 }}>Payment history and receipts</div>
+              <div className="font-black text-white" style={{ fontSize: 20, letterSpacing: '-0.5px' }}>Payments</div>
+              <div style={{ fontSize: 13, color: 'var(--text-3)', marginTop: 3 }}>Payment history and receipts</div>
             </div>
 
             <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 14, overflow: 'hidden' }}>
@@ -389,7 +389,7 @@ export default function DashboardPage() {
                 <thead>
                   <tr style={{ background: 'rgba(255,255,255,0.04)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
                     {['Payment #', 'Date', 'Invoice', 'Method', 'Amount', 'Status'].map((h) => (
-                      <th key={h} style={{ padding: '10px 16px', fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.6px', color: 'var(--text-3)', textAlign: 'left' }}>
+                      <th key={h} style={{ padding: '10px 16px', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.6px', color: 'var(--text-3)', textAlign: 'left' }}>
                         {h}
                       </th>
                     ))}
@@ -402,11 +402,11 @@ export default function DashboardPage() {
                     { id: 'PAY-3031', date: 'Dec 18, 2025', inv: 'INV-10018', method: 'ACH Transfer', amt: '$11,250.00', status: 'Cleared' },
                   ].map((p) => (
                     <tr key={p.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                      <td style={{ padding: '12px 16px' }}><span className="mono font-semibold" style={{ fontSize: 15, color: 'white' }}>{p.id}</span></td>
-                      <td style={{ padding: '12px 16px', fontSize: 15, color: 'var(--text-2)' }}>{p.date}</td>
-                      <td style={{ padding: '12px 16px' }}><span className="mono" style={{ fontSize: 15, color: 'var(--text-2)' }}>{p.inv}</span></td>
-                      <td style={{ padding: '12px 16px', fontSize: 15, color: 'var(--text-2)' }}>{p.method}</td>
-                      <td style={{ padding: '12px 16px' }}><span className="mono font-bold" style={{ fontSize: 15, color: '#30D158' }}>{p.amt}</span></td>
+                      <td style={{ padding: '12px 16px' }}><span className="mono font-semibold" style={{ fontSize: 13, color: 'white' }}>{p.id}</span></td>
+                      <td style={{ padding: '12px 16px', fontSize: 13, color: 'var(--text-2)' }}>{p.date}</td>
+                      <td style={{ padding: '12px 16px' }}><span className="mono" style={{ fontSize: 13, color: 'var(--text-2)' }}>{p.inv}</span></td>
+                      <td style={{ padding: '12px 16px', fontSize: 13, color: 'var(--text-2)' }}>{p.method}</td>
+                      <td style={{ padding: '12px 16px' }}><span className="mono font-bold" style={{ fontSize: 13, color: '#30D158' }}>{p.amt}</span></td>
                       <td style={{ padding: '12px 16px' }}><span className="bdg paid">{p.status}</span></td>
                     </tr>
                   ))}
@@ -420,18 +420,18 @@ export default function DashboardPage() {
         {tab === 'new-ticket' && (
           <div style={{ maxWidth: 640 }}>
             <div className="mb-6">
-              <div className="font-black text-white" style={{ fontSize: 24, letterSpacing: '-0.5px' }}>New Support Ticket</div>
-              <div style={{ fontSize: 15, color: 'var(--text-3)', marginTop: 3 }}>Submit a dispute, inquiry, or request to the AR team</div>
+              <div className="font-black text-white" style={{ fontSize: 20, letterSpacing: '-0.5px' }}>New Support Ticket</div>
+              <div style={{ fontSize: 13, color: 'var(--text-3)', marginTop: 3 }}>Submit a dispute, inquiry, or request to the AR team</div>
             </div>
 
             <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: '28px 28px' }}>
               <div className="grid gap-4 mb-5" style={{ gridTemplateColumns: '1fr 1fr' }}>
                 {/* Ticket Type */}
                 <div>
-                  <label style={{ fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-3)', display: 'block', marginBottom: 7 }}>
+                  <label style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-3)', display: 'block', marginBottom: 7 }}>
                     Ticket Type
                   </label>
-                  <select style={{ width: '100%', padding: '11px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 9, fontSize: 15, color: 'white', outline: 'none', fontFamily: 'Inter, sans-serif' }}>
+                  <select style={{ width: '100%', padding: '11px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 9, fontSize: 13, color: 'white', outline: 'none', fontFamily: 'Inter, sans-serif' }}>
                     <option>Invoice Dispute</option>
                     <option>Payment Issue</option>
                     <option>General Inquiry</option>
@@ -441,10 +441,10 @@ export default function DashboardPage() {
 
                 {/* Invoice Reference */}
                 <div>
-                  <label style={{ fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-3)', display: 'block', marginBottom: 7 }}>
+                  <label style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-3)', display: 'block', marginBottom: 7 }}>
                     Invoice Reference
                   </label>
-                  <select style={{ width: '100%', padding: '11px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 9, fontSize: 15, color: 'white', outline: 'none', fontFamily: 'Inter, sans-serif' }}>
+                  <select style={{ width: '100%', padding: '11px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 9, fontSize: 13, color: 'white', outline: 'none', fontFamily: 'Inter, sans-serif' }}>
                     <option>INV-10042 — $12,500.00</option>
                     <option>INV-10039 — $18,750.00</option>
                     <option>INV-10033 — $22,400.00</option>
@@ -453,7 +453,7 @@ export default function DashboardPage() {
 
                 {/* Subject - full width */}
                 <div style={{ gridColumn: '1 / -1' }}>
-                  <label style={{ fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-3)', display: 'block', marginBottom: 7 }}>
+                  <label style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-3)', display: 'block', marginBottom: 7 }}>
                     Subject
                   </label>
                   <input
@@ -461,16 +461,16 @@ export default function DashboardPage() {
                     value={ticketSubject}
                     onChange={(e) => setTicketSubject(e.target.value)}
                     placeholder="e.g. Price discrepancy on INV-10042"
-                    style={{ width: '100%', padding: '11px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 9, fontSize: 15, color: 'white', outline: 'none', fontFamily: 'Inter, sans-serif' }}
+                    style={{ width: '100%', padding: '11px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 9, fontSize: 13, color: 'white', outline: 'none', fontFamily: 'Inter, sans-serif' }}
                   />
                 </div>
 
                 {/* Priority */}
                 <div>
-                  <label style={{ fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-3)', display: 'block', marginBottom: 7 }}>
+                  <label style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-3)', display: 'block', marginBottom: 7 }}>
                     Priority
                   </label>
-                  <select style={{ width: '100%', padding: '11px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 9, fontSize: 15, color: 'white', outline: 'none', fontFamily: 'Inter, sans-serif' }}>
+                  <select style={{ width: '100%', padding: '11px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 9, fontSize: 13, color: 'white', outline: 'none', fontFamily: 'Inter, sans-serif' }}>
                     <option>Normal</option>
                     <option>Urgent</option>
                   </select>
@@ -478,19 +478,19 @@ export default function DashboardPage() {
 
                 {/* Attachment */}
                 <div>
-                  <label style={{ fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-3)', display: 'block', marginBottom: 7 }}>
+                  <label style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-3)', display: 'block', marginBottom: 7 }}>
                     Attachment (optional)
                   </label>
                   <input
                     type="file"
                     accept=".pdf,.jpg,.png"
-                    style={{ width: '100%', padding: '8px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 9, fontSize: 15, color: 'var(--text-2)', cursor: 'pointer', outline: 'none' }}
+                    style={{ width: '100%', padding: '8px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 9, fontSize: 13, color: 'var(--text-2)', cursor: 'pointer', outline: 'none' }}
                   />
                 </div>
 
                 {/* Description - full width */}
                 <div style={{ gridColumn: '1 / -1' }}>
-                  <label style={{ fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-3)', display: 'block', marginBottom: 7 }}>
+                  <label style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-3)', display: 'block', marginBottom: 7 }}>
                     Description
                   </label>
                   <textarea
@@ -498,7 +498,7 @@ export default function DashboardPage() {
                     onChange={(e) => setTicketDesc(e.target.value)}
                     rows={4}
                     placeholder="Please describe your inquiry in detail..."
-                    style={{ width: '100%', padding: '11px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 9, fontSize: 15, color: 'white', outline: 'none', fontFamily: 'Inter, sans-serif', resize: 'vertical' }}
+                    style={{ width: '100%', padding: '11px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 9, fontSize: 13, color: 'white', outline: 'none', fontFamily: 'Inter, sans-serif', resize: 'vertical' }}
                   />
                 </div>
               </div>
@@ -506,13 +506,13 @@ export default function DashboardPage() {
               <div className="flex gap-3 justify-end">
                 <button
                   onClick={() => setTab('overview')}
-                  style={{ padding: '12px 24px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 100, fontSize: 16, color: 'var(--text-2)', fontFamily: 'Inter, sans-serif', fontWeight: 600, cursor: 'pointer' }}
+                  style={{ padding: '12px 24px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 100, fontSize: 14, color: 'var(--text-2)', fontFamily: 'Inter, sans-serif', fontWeight: 600, cursor: 'pointer' }}
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSubmitTicket}
-                  style={{ padding: '12px 28px', background: 'var(--grad)', border: 'none', borderRadius: 100, fontSize: 16, color: 'white', fontFamily: 'Inter, sans-serif', fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 20px rgba(61,165,61,0.3)' }}
+                  style={{ padding: '12px 28px', background: 'var(--grad)', border: 'none', borderRadius: 100, fontSize: 14, color: 'white', fontFamily: 'Inter, sans-serif', fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 20px rgba(61,165,61,0.3)' }}
                 >
                   Submit Ticket →
                 </button>
@@ -536,13 +536,13 @@ export default function DashboardPage() {
             {/* Header */}
             <div className="flex items-center justify-between" style={{ background: 'var(--grad)', padding: '28px 32px' }}>
               <div>
-                <div className="font-extrabold text-white" style={{ fontSize: 24 }}>Invoice Detail</div>
-                <div className="mono" style={{ fontSize: 15, color: 'rgba(255,255,255,0.7)', marginTop: 3 }}>INV-10042 · ABC Manufacturing Corp</div>
+                <div className="font-extrabold text-white" style={{ fontSize: 20 }}>Invoice Detail</div>
+                <div className="mono" style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', marginTop: 3 }}>INV-10042 · ABC Manufacturing Corp</div>
               </div>
               <button
                 onClick={() => setInvModalOpen(false)}
                 className="flex items-center justify-center"
-                style={{ background: 'rgba(255,255,255,0.15)', border: 'none', color: 'white', width: 30, height: 30, borderRadius: 8, cursor: 'pointer', fontSize: 18 }}
+                style={{ background: 'rgba(255,255,255,0.15)', border: 'none', color: 'white', width: 30, height: 30, borderRadius: 8, cursor: 'pointer', fontSize: 16 }}
               >
                 ✕
               </button>
@@ -559,12 +559,12 @@ export default function DashboardPage() {
                   { lbl: 'Terms',         val: 'Net 30',                  color: undefined },
                 ].map(({ lbl, val, color, mono }: any) => (
                   <div key={lbl}>
-                    <label style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-3)', display: 'block', marginBottom: 4 }}>{lbl}</label>
-                    <span className={mono ? 'mono' : ''} style={{ fontSize: 16, fontWeight: 600, color: color || 'white' }}>{val}</span>
+                    <label style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-3)', display: 'block', marginBottom: 4 }}>{lbl}</label>
+                    <span className={mono ? 'mono' : ''} style={{ fontSize: 14, fontWeight: 600, color: color || 'white' }}>{val}</span>
                   </div>
                 ))}
                 <div>
-                  <label style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-3)', display: 'block', marginBottom: 4 }}>Status</label>
+                  <label style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-3)', display: 'block', marginBottom: 4 }}>Status</label>
                   <span className="bdg overdue">Overdue</span>
                 </div>
               </div>
@@ -573,7 +573,7 @@ export default function DashboardPage() {
                 <thead>
                   <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
                     {['Description', 'Qty', 'Rate', 'Total'].map((h, i) => (
-                      <th key={h} style={{ padding: '9px 12px', fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.6px', color: 'var(--text-3)', textAlign: i === 0 ? 'left' : i === 1 ? 'center' : 'right' }}>{h}</th>
+                      <th key={h} style={{ padding: '9px 12px', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.6px', color: 'var(--text-3)', textAlign: i === 0 ? 'left' : i === 1 ? 'center' : 'right' }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -585,10 +585,10 @@ export default function DashboardPage() {
                     { desc: 'Software License Fee Q1',              qty: '1',      rate: '$250.00',   total: '$250.00'   },
                   ].map(({ desc, qty, rate, total }) => (
                     <tr key={desc} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                      <td style={{ padding: '11px 12px', fontSize: 15, color: 'var(--text-2)' }}>{desc}</td>
-                      <td className="mono" style={{ padding: '11px 12px', fontSize: 15, color: 'var(--text-2)', textAlign: 'center' }}>{qty}</td>
-                      <td className="mono" style={{ padding: '11px 12px', fontSize: 15, color: 'var(--text-2)', textAlign: 'right' }}>{rate}</td>
-                      <td className="mono font-bold" style={{ padding: '11px 12px', fontSize: 15, color: 'white', textAlign: 'right' }}>{total}</td>
+                      <td style={{ padding: '11px 12px', fontSize: 13, color: 'var(--text-2)' }}>{desc}</td>
+                      <td className="mono" style={{ padding: '11px 12px', fontSize: 13, color: 'var(--text-2)', textAlign: 'center' }}>{qty}</td>
+                      <td className="mono" style={{ padding: '11px 12px', fontSize: 13, color: 'var(--text-2)', textAlign: 'right' }}>{rate}</td>
+                      <td className="mono font-bold" style={{ padding: '11px 12px', fontSize: 13, color: 'white', textAlign: 'right' }}>{total}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -596,15 +596,15 @@ export default function DashboardPage() {
 
               <div className="flex justify-end mt-5">
                 <div className="text-right">
-                  <div style={{ fontSize: 13, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Total Amount Due</div>
-                  <div className="mono font-black grad-text" style={{ fontSize: 38, letterSpacing: '-1px' }}>$12,500.00</div>
+                  <div style={{ fontSize: 11, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Total Amount Due</div>
+                  <div className="mono font-black grad-text" style={{ fontSize: 32, letterSpacing: '-1px' }}>$12,500.00</div>
                 </div>
               </div>
 
               <div className="grid gap-3 mt-6" style={{ gridTemplateColumns: '1fr 1fr' }}>
                 <button
                   onClick={() => { setInvModalOpen(false); handleDownload('INV-10042'); }}
-                  style={{ padding: 14, background: 'var(--grad)', color: 'white', border: 'none', borderRadius: 100, fontFamily: 'Inter, sans-serif', fontSize: 16, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+                  style={{ padding: 14, background: 'var(--grad)', color: 'white', border: 'none', borderRadius: 100, fontFamily: 'Inter, sans-serif', fontSize: 14, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
                 >
                   ⬇ Download PDF
                 </button>
@@ -612,7 +612,7 @@ export default function DashboardPage() {
                   href="https://www.agilysys.com/en/paymentcenter/"
                   target="_blank"
                   rel="noreferrer"
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: 14, background: 'var(--grad)', color: 'white', borderRadius: 100, fontFamily: 'Inter, sans-serif', fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 20px rgba(61,165,61,0.3)' }}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: 14, background: 'var(--grad)', color: 'white', borderRadius: 100, fontFamily: 'Inter, sans-serif', fontSize: 14, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 20px rgba(61,165,61,0.3)' }}
                 >
                   💳 Pay Now
                 </a>
@@ -634,18 +634,18 @@ export default function DashboardPage() {
             style={{ background: '#1C1C1E', border: '1px solid var(--glass-border)', borderRadius: 28, padding: 44, maxWidth: 440, width: '90%', animation: 'popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)' }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ fontSize: 60, marginBottom: 16 }}>✅</div>
-            <div className="font-extrabold" style={{ fontSize: 26, marginBottom: 8, letterSpacing: '-0.5px' }}>Ticket Submitted!</div>
-            <div style={{ fontSize: 16, color: 'var(--text-2)', lineHeight: 1.6, marginBottom: 18 }}>Your support request has been received by the Agilysys AR team.</div>
-            <div className="mono font-bold inline-block" style={{ background: 'var(--dark-3)', color: 'var(--ag-green)', fontSize: 24, letterSpacing: 3, padding: '14px 28px', borderRadius: 12, marginBottom: 14, border: '1px solid rgba(61,165,61,0.25)' }}>
+            <div style={{ fontSize: 52, marginBottom: 16 }}>✅</div>
+            <div className="font-extrabold" style={{ fontSize: 22, marginBottom: 8, letterSpacing: '-0.5px' }}>Ticket Submitted!</div>
+            <div style={{ fontSize: 14, color: 'var(--text-2)', lineHeight: 1.6, marginBottom: 18 }}>Your support request has been received by the Agilysys AR team.</div>
+            <div className="mono font-bold inline-block" style={{ background: 'var(--dark-3)', color: 'var(--ag-green)', fontSize: 20, letterSpacing: 3, padding: '14px 28px', borderRadius: 12, marginBottom: 14, border: '1px solid rgba(61,165,61,0.25)' }}>
               AR-2026-00{String(caseId).padStart(3, '0')}
             </div>
-            <div style={{ fontSize: 14, color: 'var(--text-3)', marginBottom: 24 }}>
+            <div style={{ fontSize: 12, color: 'var(--text-3)', marginBottom: 24 }}>
               Confirmation email sent to address on file. Our team responds within 1–2 business days.
             </div>
             <button
               onClick={() => { setTicketModalOpen(false); setTab('overview'); }}
-              style={{ width: '100%', padding: 14, background: 'var(--grad)', color: 'white', border: 'none', borderRadius: 100, fontFamily: 'Inter, sans-serif', fontSize: 16, fontWeight: 700, cursor: 'pointer' }}
+              style={{ width: '100%', padding: 14, background: 'var(--grad)', color: 'white', border: 'none', borderRadius: 100, fontFamily: 'Inter, sans-serif', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}
             >
               View My Tickets
             </button>

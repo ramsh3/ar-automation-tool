@@ -6,9 +6,9 @@ interface LogoProps {
 
 export default function AgilysysLogo({ size = 'md' }: LogoProps) {
   const sizes = {
-    sm: { mark: { w: 36, h: 24, green: 20, blue: 11 }, name: 'text-base', sub: 'text-xs' },
-    md: { mark: { w: 42, h: 29, green: 22, blue: 12 }, name: 'text-base', sub: 'text-xs' },
-    lg: { mark: { w: 58, h: 40, green: 34, blue: 18 }, name: 'text-2xl', sub: 'text-sm' },
+    sm: { mark: { w: 32, h: 22, green: 18, blue: 10 }, name: 'text-sm', sub: 'text-[9px]' },
+    md: { mark: { w: 38, h: 26, green: 20, blue: 11 }, name: 'text-sm', sub: 'text-[10px]' },
+    lg: { mark: { w: 52, h: 36, green: 30, blue: 16 }, name: 'text-xl', sub: 'text-[11px]' },
   };
   const s = sizes[size];
 
