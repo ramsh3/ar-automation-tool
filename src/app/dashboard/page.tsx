@@ -1,33 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import AgilysysLogo from '@/components/AgilysysLogo';
+import type { Invoice } from '@/types/invoice';
+import type { Payment } from '@/types/payment';
 
 type Tab = 'overview' | 'invoices' | 'payments' | 'new-ticket';
 
-interface Invoice {
-  id: string;
-  date: string;
-  dueDate: string;
-  dueDateColor?: string;
-  overdueNote?: string;
-  amount: string;
-  balance: string;
-  balanceColor?: string;
-  status: 'overdue' | 'open' | 'paid' | 'partial';
-}
+const PORTAL_CUSTOMER_NO = 'CUST-10234';
 
-const INVOICES: Invoice[] = [
-  { id: 'INV-10042', date: 'Jan 15, 2026', dueDate: 'Feb 15, 2026', dueDateColor: '#FF6961', overdueNote: '11 days overdue', amount: '$12,500.00', balance: '$12,500.00', balanceColor: '#FF6961', status: 'overdue' },
-  { id: 'INV-10039', date: 'Jan 28, 2026', dueDate: 'Mar 30, 2026', amount: '$18,750.00', balance: '$18,750.00', status: 'open' },
-  { id: 'INV-10036', date: 'Jan 12, 2026', dueDate: 'Feb 11, 2026', amount: '$9,200.00', balance: '$0.00', balanceColor: '#30D158', status: 'paid' },
-  { id: 'INV-10033', date: 'Jan 5, 2026',  dueDate: 'Apr 5, 2026',  amount: '$22,400.00', balance: '$22,400.00', status: 'open' },
-  { id: 'INV-10029', date: 'Dec 20, 2025', dueDate: 'Jan 19, 2026', dueDateColor: '#FF6961', overdueNote: '28 days overdue', amount: '$8,200.00', balance: '$8,200.00', balanceColor: '#FF6961', status: 'overdue' },
-  { id: 'INV-10024', date: 'Dec 10, 2025', dueDate: 'Jan 9, 2026',  amount: '$15,600.00', balance: '$7,800.00', status: 'partial' },
-];
+function recentInvoiceSubline(inv: Invoice) {
+  if (inv.status === 'paid') return `Paid ${inv.dueDate}`;
+  if (inv.overdueNote) return `Due ${inv.dueDate} · ${inv.overdueNote}`;
+  return `Due ${inv.dueDate}`;
+}
 
 export default function DashboardPage() {
   const [tab, setTab] = useState<Tab>('overview');
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [invoicesLoading, setInvoicesLoading] = useState(true);
+  const [invoicesError, setInvoicesError] = useState<string | null>(null);
+  const [payments, setPayments] = useState<Payment[]>([]);
+  const [paymentsLoading, setPaymentsLoading] = useState(true);
+  const [paymentsError, setPaymentsError] = useState<string | null>(null);
   const [invModalOpen, setInvModalOpen] = useState(false);
   const [ticketModalOpen, setTicketModalOpen] = useState(false);
   const [caseId, setCaseId] = useState(47);
@@ -36,6 +31,55 @@ export default function DashboardPage() {
   const [toastVisible, setToastVisible] = useState(false);
   const [ticketSubject, setTicketSubject] = useState('');
   const [ticketDesc, setTicketDesc] = useState('');
+
+  const loadInvoices = useCallback(async () => {
+    setInvoicesLoading(true);
+    setInvoicesError(null);
+    try {
+      const res = await fetch(
+        `/api/invoices?customerNo=${encodeURIComponent(PORTAL_CUSTOMER_NO)}`,
+        { cache: 'no-store' },
+      );
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(typeof body.error === 'string' ? body.error : res.statusText);
+      }
+      const data = (await res.json()) as { invoices: Invoice[] };
+      setInvoices(Array.isArray(data.invoices) ? data.invoices : []);
+    } catch (e) {
+      setInvoicesError(e instanceof Error ? e.message : 'Failed to load invoices');
+      setInvoices([]);
+    } finally {
+      setInvoicesLoading(false);
+    }
+  }, []);
+
+  const loadPayments = useCallback(async () => {
+    setPaymentsLoading(true);
+    setPaymentsError(null);
+    try {
+      const res = await fetch(
+        `/api/payments?customerNo=${encodeURIComponent(PORTAL_CUSTOMER_NO)}`,
+        { cache: 'no-store' },
+      );
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(typeof body.error === 'string' ? body.error : res.statusText);
+      }
+      const data = (await res.json()) as { payments: Payment[] };
+      setPayments(Array.isArray(data.payments) ? data.payments : []);
+    } catch (e) {
+      setPaymentsError(e instanceof Error ? e.message : 'Failed to load payments');
+      setPayments([]);
+    } finally {
+      setPaymentsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadInvoices();
+    void loadPayments();
+  }, [loadInvoices, loadPayments]);
 
   let toastTimer: ReturnType<typeof setTimeout>;
   function showToast(icon: string, msg: string) {
@@ -57,6 +101,19 @@ export default function DashboardPage() {
     setTicketModalOpen(true);
     setTicketSubject('');
     setTicketDesc('');
+  }
+
+  function getStatusBadge(status: string) {
+    switch (status) {
+      case 'cleared':
+        return 'paid';
+      case 'pending':
+        return 'open';
+      case 'failed':
+        return 'overdue';      
+      default:
+        return 'open';
+    }
   }
 
   const tabs: { key: Tab; label: string }[] = [
@@ -119,7 +176,7 @@ export default function DashboardPage() {
             fontSize: 11,
           }}
         >
-          CUST-10234
+          {PORTAL_CUSTOMER_NO}
         </div>
       </div>
 
@@ -134,7 +191,7 @@ export default function DashboardPage() {
                 Overview
               </div>
               <div style={{ fontSize: 13, color: 'var(--text-3)', marginTop: 3 }}>
-                ABC Manufacturing Corp · CUST-10234
+                ABC Manufacturing Corp · {PORTAL_CUSTOMER_NO}
               </div>
             </div>
 
@@ -230,7 +287,17 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  {INVOICES.slice(0, 4).map((inv) => (
+                  {invoicesLoading && (
+                    <div style={{ fontSize: 13, color: 'var(--text-3)', padding: '8px 0' }}>Loading invoices…</div>
+                  )}
+                  {invoicesError && !invoicesLoading && (
+                    <div style={{ fontSize: 13, color: '#FF6961', padding: '8px 0' }}>{invoicesError}</div>
+                  )}
+                  {!invoicesLoading && !invoicesError && invoices.length === 0 && (
+                    <div style={{ fontSize: 13, color: 'var(--text-3)', padding: '8px 0' }}>No invoices for this account.</div>
+                  )}
+                  {!invoicesLoading &&
+                    invoices.slice(0, 4).map((inv) => (
                     <div
                       key={inv.id}
                       className="grid items-center cursor-pointer rounded-xl transition-all duration-150 hover:opacity-80"
@@ -246,7 +313,7 @@ export default function DashboardPage() {
                       <div>
                         <div className="mono font-semibold" style={{ fontSize: 13, color: 'white' }}>{inv.id}</div>
                         <div style={{ fontSize: 11, color: inv.overdueNote ? '#FF6961' : 'var(--text-3)' }}>
-                          {inv.overdueNote ? `Due ${inv.dueDate} · ${inv.overdueNote}` : `Paid ${inv.dueDate}`}
+                          {recentInvoiceSubline(inv)}
                         </div>
                       </div>
                       <span className={`bdg ${inv.status}`}>{inv.status.charAt(0).toUpperCase() + inv.status.slice(1)}</span>
@@ -312,7 +379,28 @@ export default function DashboardPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {INVOICES.map((inv) => (
+                  {invoicesLoading && (
+                    <tr>
+                      <td colSpan={8} style={{ padding: '20px 16px', fontSize: 13, color: 'var(--text-3)' }}>
+                        Loading invoices…
+                      </td>
+                    </tr>
+                  )}
+                  {invoicesError && !invoicesLoading && (
+                    <tr>
+                      <td colSpan={8} style={{ padding: '20px 16px', fontSize: 13, color: '#FF6961' }}>
+                        {invoicesError}
+                      </td>
+                    </tr>
+                  )}
+                  {!invoicesLoading && !invoicesError && invoices.length === 0 && (
+                    <tr>
+                      <td colSpan={8} style={{ padding: '20px 16px', fontSize: 13, color: 'var(--text-3)' }}>
+                        No invoices for this account.
+                      </td>
+                    </tr>
+                  )}
+                  {!invoicesLoading && !invoicesError && invoices.map((inv) => (
                     <tr
                       key={inv.id}
                       className="cursor-pointer"
@@ -396,18 +484,37 @@ export default function DashboardPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {[
-                    { id: 'PAY-3041', date: 'Feb 10, 2026', inv: 'INV-10036', method: 'ACH Transfer', amt: '$9,200.00', status: 'Cleared' },
-                    { id: 'PAY-3038', date: 'Jan 22, 2026', inv: 'INV-10024', method: 'Credit Card', amt: '$7,800.00', status: 'Cleared' },
-                    { id: 'PAY-3031', date: 'Dec 18, 2025', inv: 'INV-10018', method: 'ACH Transfer', amt: '$11,250.00', status: 'Cleared' },
-                  ].map((p) => (
+                  {paymentsLoading && (
+                    <tr>
+                      <td colSpan={6} style={{ padding: '20px 16px', fontSize: 13, color: 'var(--text-3)' }}>
+                        Loading payments…
+                      </td>
+                    </tr>
+                  )}
+                  {paymentsError && !paymentsLoading && (
+                    <tr>
+                      <td colSpan={6} style={{ padding: '20px 16px', fontSize: 13, color: '#FF6961' }}>
+                        {paymentsError}
+                      </td>
+                    </tr>
+                  )}
+                  {!paymentsLoading && !paymentsError && payments.length === 0 && (
+                    <tr>
+                      <td colSpan={6} style={{ padding: '20px 16px', fontSize: 13, color: 'var(--text-3)' }}>
+                        No payments for this account.
+                      </td>
+                    </tr>
+                  )}
+                  {!paymentsLoading &&
+                    !paymentsError &&
+                    payments.map((p) => (
                     <tr key={p.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                       <td style={{ padding: '12px 16px' }}><span className="mono font-semibold" style={{ fontSize: 13, color: 'white' }}>{p.id}</span></td>
                       <td style={{ padding: '12px 16px', fontSize: 13, color: 'var(--text-2)' }}>{p.date}</td>
                       <td style={{ padding: '12px 16px' }}><span className="mono" style={{ fontSize: 13, color: 'var(--text-2)' }}>{p.inv}</span></td>
                       <td style={{ padding: '12px 16px', fontSize: 13, color: 'var(--text-2)' }}>{p.method}</td>
                       <td style={{ padding: '12px 16px' }}><span className="mono font-bold" style={{ fontSize: 13, color: '#30D158' }}>{p.amt}</span></td>
-                      <td style={{ padding: '12px 16px' }}><span className="bdg paid">{p.status}</span></td>
+                      <td style={{ padding: '12px 16px' }}><span className={`bdg ${getStatusBadge(p.status)}`}>{p.status}</span></td>
                     </tr>
                   ))}
                 </tbody>
@@ -445,9 +552,17 @@ export default function DashboardPage() {
                     Invoice Reference
                   </label>
                   <select style={{ width: '100%', padding: '11px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 9, fontSize: 13, color: 'white', outline: 'none', fontFamily: 'Inter, sans-serif' }}>
-                    <option>INV-10042 — $12,500.00</option>
-                    <option>INV-10039 — $18,750.00</option>
-                    <option>INV-10033 — $22,400.00</option>
+                    {invoices.filter((i) => i.status !== 'paid').length === 0 ? (
+                      <option value="">No open invoices</option>
+                    ) : (
+                      invoices
+                        .filter((i) => i.status !== 'paid')
+                        .map((inv) => (
+                          <option key={inv.id} value={inv.id}>
+                            {inv.id} — {inv.amount}
+                          </option>
+                        ))
+                    )}
                   </select>
                 </div>
 
